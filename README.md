@@ -16,6 +16,63 @@ Documentación de la API: https://fastapi-demo-1373c10f.fastapicloud.dev/docs
 
 `uv run fastapi deploy`
 
+# Despliegue automático en FastAPI Cloud
+
+El proyecto está vinculado a FastAPI Cloud mediante `.fastapicloud/cloud.json`.
+Ese archivo contiene el `app_id`; no es necesario usar `team_id` en el workflow.
+La carpeta `.fastapicloud` no debe subirse al repositorio.
+
+Para configurar GitHub Actions desde cero, inicia sesión y ejecuta:
+
+```bash
+uv run fastapi cloud login
+uv run fastapi cloud setup-ci --branch main
+```
+
+Esto crea `.github/workflows/deploy.yml`, que ejecuta `uv run fastapi deploy`
+automáticamente cada vez que se hace push a `main`. Después, guarda el workflow:
+
+```bash
+git add .github/workflows/deploy.yml
+git commit -m "Configure automatic FastAPI Cloud deployment"
+git push origin main
+```
+
+Si hay que renovar el token sin crear otro workflow, ejecuta:
+
+```bash
+uv run fastapi cloud setup-ci --secrets-only
+```
+
+El workflow necesita estos secretos en GitHub, en **Settings > Secrets and
+variables > Actions > Repository secrets**:
+
+```text
+FASTAPI_CLOUD_TOKEN   # Deploy token de FastAPI Cloud
+FASTAPI_CLOUD_APP_ID  # ID de .fastapicloud/cloud.json
+```
+
+El token solo se muestra al crearlo. Si se pierde, hay que generar uno nuevo.
+No debe guardarse en el código ni en el README.
+
+Las variables que necesita la aplicación en producción se configuran en
+FastAPI Cloud, no en GitHub Actions:
+
+```text
+DATABASE_URL
+JWT_SECRET_KEY
+JWT_ALGORITHM=HS256
+JWT_EXPIRE_MINUTES=30
+```
+
+La demo pública está disponible en:
+
+https://fastapi-demo-1373c10f.fastapicloud.dev/
+
+La documentación interactiva está en:
+
+https://fastapi-demo-1373c10f.fastapicloud.dev/docs
+
 # Add EmailStr validator
 
 `uv add email-validator`
