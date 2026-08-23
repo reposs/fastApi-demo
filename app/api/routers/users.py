@@ -5,16 +5,16 @@ from sqlmodel import Session
 
 from app.api.dependencies import CurrentUser
 from app.core.db.database import get_db
-from app.core.schemas.user_schema import UserIn, UserOut, UserUpdate
+from app.core.schemas.user_schema import UserCreate, UserResponse, UserUpdate
 from app.repositories.user_repository import UserRepository
 from app.services.user_service import UserService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def user_create(
-    data: UserIn,
+    data: UserCreate,
     current_user: CurrentUser,
     session: Session = Depends(get_db),
 ):
@@ -24,7 +24,7 @@ def user_create(
         raise HTTPException(status_code=409, detail=str(error)) from error
 
 
-@router.get("", response_model=list[UserOut])
+@router.get("", response_model=list[UserResponse])
 def user_list(
     current_user: CurrentUser,
     session: Session = Depends(get_db),
@@ -34,7 +34,7 @@ def user_list(
     return UserRepository(session).list(skip, limit)
 
 
-@router.get("/{user_id}", response_model=UserOut)
+@router.get("/{user_id}", response_model=UserResponse)
 def user_get(
     user_id: UUID,
     current_user: CurrentUser,
@@ -46,7 +46,7 @@ def user_get(
     return user
 
 
-@router.put("/{user_id}", response_model=UserOut)
+@router.put("/{user_id}", response_model=UserResponse)
 def user_update(
     user_id: UUID,
     data: UserUpdate,

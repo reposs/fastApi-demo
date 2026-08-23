@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 
-from app.core.schemas.user_schema import UserIn, UserUpdate
+from app.core.schemas.user_schema import UserCreate, UserUpdate
 from app.core.models.user_model import UserModel
 from app.core.security import hash_password
 from app.repositories.user_repository import UserRepository
@@ -10,12 +10,11 @@ class UserService:
     def __init__(self, repository: UserRepository):
         self.repository = repository
 
-    def create(self, data: UserIn) -> UserModel:
+    def create(self, data: UserCreate) -> UserModel:
         if self.repository.get_by_email(str(data.email)):
             raise ValueError("A user with this email already exists")
         user = UserModel(
-            id=data.id or uuid4(),
-            created_at=data.created_at,
+            id=uuid4(),
             firstname=data.firstname,
             lastname=data.lastname,
             email=str(data.email),

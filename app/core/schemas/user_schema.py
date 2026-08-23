@@ -7,9 +7,7 @@ from pydantic import AfterValidator, BaseModel, EmailStr, Field
 from app.core.validators.password_validator import validate_password
 
 
-class UserIn(BaseModel):
-    id: UUID | None = None
-    created_at: datetime.datetime | None = None
+class UserCreate(BaseModel):
     firstname: Annotated[
         str,
         Field(min_length=3, max_length=50, description="The user firstname"),
@@ -27,9 +25,9 @@ class UserIn(BaseModel):
     ]
 
 
-class UserOut(BaseModel):
+class UserResponse(BaseModel):
     id: UUID
-    created_at: datetime.datetime | None = None
+    created_at: datetime.datetime
     firstname: str
     lastname: str | None = None
     email: EmailStr
