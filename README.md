@@ -1,3 +1,9 @@
+# fastApi-demo
+
+Demo online: https://fastapi-demo-1373c10f.fastapicloud.dev/
+
+Documentación de la API: https://fastapi-demo-1373c10f.fastapicloud.dev/docs
+
 # Run project PRO
 
 `uv run fastapi run`
