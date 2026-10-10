@@ -1,39 +1,37 @@
-import os
 from collections.abc import Generator
-from urllib.parse import quote_plus
 
-from dotenv import load_dotenv
-from sqlmodel import Session, create_engine
+from sqlmodel import Session, SQLModel, create_engine
 
+from app.core.config import settings
 
-load_dotenv()
+# Determine engine parameters based on database driver
+engine_kwargs: dict = {
+    "pool_pre_ping": settings.DB_POOL_PRE_PING,
+}
 
+if settings.sync_database_url.startswith("sqlite"):
+    engine_kwargs["connect_args"] = {"check_same_thread": False}
+else:
+    engine_kwargs["pool_size"] = settings.DB_POOL_SIZE
+    engine_kwargs["max_overflow"] = settings.DB_MAX_OVERFLOW
+    engine_kwargs["pool_recycle"] = settings.DB_POOL_RECYCLE
 
-def _get_database_url() -> str:
-    database_url = os.getenv("DATABASE_URL")
-    if database_url:
-        return database_url
-
-    password = os.getenv("DB_PASSWORD")
-    if not password:
-        raise RuntimeError(
-            "Define DATABASE_URL or DB_PASSWORD before starting the application"
-        )
-
-    username = quote_plus(os.getenv("DB_USER", "postgres"))
-    encoded_password = quote_plus(password)
-    host = os.getenv("DB_HOST", "aws-1-eu-west-1.pooler.supabase.com")
-    port = os.getenv("DB_PORT", "5432")
-    database = os.getenv("DB_NAME", "postgres")
-    return (
-        f"postgresql+psycopg://{username}:{encoded_password}"
-        f"@{host}:{port}/{database}"
-    )
+engine = create_engine(settings.sync_database_url, **engine_kwargs)
 
 
-engine = create_engine(_get_database_url(), pool_pre_ping=True)
+def init_db() -> None:
+    """Initialize database tables defined in SQLModel metadata."""
+    SQLModel.metadata.create_all(engine)
 
 
 def get_db() -> Generator[Session, None, None]:
-    with Session(engine) as db:
-        yield db
+    """Dependency that yields a database session and ensures rollback on failure."""
+    with Session(engine) as session:
+        try:
+            yield session
+        except Exception:
+            session.rollback()
+            raise
+
+
+__all__ = ["engine", "get_db", "init_db"]
