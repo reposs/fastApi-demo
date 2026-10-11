@@ -6,6 +6,10 @@ Demostración de API REST de alto rendimiento construida con **FastAPI**, **Pyda
 - **Documentación Swagger UI:** https://fastapi-demo-1373c10f.fastapicloud.dev/docs
 - **Documentación ReDoc:** https://fastapi-demo-1373c10f.fastapicloud.dev/redoc
 
+> [!IMPORTANT]
+> **Aviso de Propiedad Intelectual y Uso Exclusivo para Portafolio:**  
+> Este repositorio ha sido publicado **únicamente con fines de exhibición técnica y demostración en portafolio profesional**. Queda **estrictamente prohibida su clonación, bifurcación (fork), descarga, copia, reproducción, distribución o uso (total o parcial)** para fines personales, educativos o comerciales sin autorización previa y por escrito del autor. Este proyecto **no** cuenta con una licencia de código abierto por defecto (*All Rights Reserved*).
+
 ---
 
 ## 🏗️ Arquitectura del Proyecto
@@ -151,3 +155,17 @@ FASTAPI_CLOUD_APP_ID  # ID de .fastapicloud/cloud.json
 ```
 
 Las variables en producción (`DATABASE_URL`, `JWT_SECRET_KEY`, etc.) se configuran en el panel de **FastAPI Cloud**.
+
+---
+
+## 📄 Términos de Uso y Derechos de Autor
+
+**© 2026 R. David Márquez. Todos los derechos reservados.**
+
+Este repositorio y todo su código fuente son una **obra propietaria y privada**, puesta a disposición pública exclusivamente como muestra de capacidades técnicas y de desarrollo para **demostración en portafolio personal**.
+
+* 🚫 **Prohibida la clonación y replicación:** No se permite descargar, clonar ni utilizar este repositorio como plantilla o base para otros proyectos personales, académicos o comerciales.
+* 🚫 **Prohibida la distribución y modificación:** Queda prohibida la redistribución, modificación o publicación de derivados de este código bajo cualquier medio o formato.
+* 🚫 **Sin licencia de código abierto (No Open Source):** Este repositorio no cuenta con licencias permisivas (como MIT, Apache 2.0 o GPL). Al no otorgarse ninguna licencia explícita, aplican las leyes internacionales de propiedad intelectual y derechos de autor vigentes (*All Rights Reserved*).
+
+Para cualquier consulta, propuesta profesional o solicitud de autorización expresa, por favor ponte en contacto directamente con el autor.
